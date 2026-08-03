@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benefício Exclusivo · Alunos Lito Academy ✈ Azul Linhas Aéreas</title>
+  <meta name="description" content="Programa de indicação da Lito Academy em parceria com a Azul Linhas Aéreas. Alunos Lito podem enviar sua candidatura para as vagas da Azul." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <a class="wordmark" href="#topo" aria-label="Lito Academy e Azul Linhas Aéreas">
+      <span class="wordmark__lito">LITO<span class="wordmark__thin">ACADEMY</span></span>
+      <span class="wordmark__route" aria-hidden="true">✈</span>
+      <span class="wordmark__azul">AZUL</span>
+    </a>
+    <nav class="site-nav">
+      <a href="#beneficio">Como funciona</a>
+      <a href="#aviso">Atenção</a>
+      <a class="btn btn--ghost" href="#formulario">Fazer indicação</a>
+    </nav>
+  </header>
+
+  <main id="topo">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+
+      <div class="hero__inner">
+        <p class="eyebrow">Benefício exclusivo · Alunos Lito Academy</p>
+
+        <h1 class="hero__title">
+          Sua indicação para a <span class="hl">Azul&nbsp;Linhas&nbsp;Aéreas</span> decola aqui.
+        </h1>
+
+        <p class="hero__lead">
+          A Lito Academy, em parceria com a Azul, recomenda seus alunos para vagas na
+          companhia. Preencha sua candidatura com atenção para que sua indicação seja
+          enviada ao time de Recrutamento e Seleção da Azul.
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#formulario">Fazer minha indicação</a>
+          <a class="btn btn--line" href="#beneficio">Como funciona</a>
+        </div>
+
+        <!-- Faixa estilo painel de embarque -->
+        <div class="depboard" role="img" aria-label="Rota: Lito Academy com destino à Azul Linhas Aéreas">
+          <div class="depboard__cell">
+            <span class="depboard__label">Origem</span>
+            <span class="depboard__value">LITO</span>
+          </div>
+          <div class="depboard__path" aria-hidden="true">
+            <svg viewBox="0 0 220 40" preserveAspectRatio="none" class="flightpath">
+              <path d="M4 34 C 70 4, 150 4, 216 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 5" />
+              <g class="flightpath__plane">
+                <circle r="3" fill="currentColor" />
+              </g>
+            </svg>
+          </div>
+          <div class="depboard__cell depboard__cell--right">
+            <span class="depboard__label">Destino</span>
+            <span class="depboard__value">AZUL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BENEFÍCIO / COMO FUNCIONA ============ -->
+    <section class="section beneficio" id="beneficio">
+      <header class="section__head">
+        <p class="kicker">Programa de indicação</p>
+        <h2 class="section__title">Da sala de aula da Lito para a cabine da Azul</h2>
+      </header>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step__code">Etapa 01</span>
+          <h3 class="step__title">Você é aluno Lito</h3>
+          <p class="step__text">Fez ou faz um dos cursos da Lito Academy e quer construir carreira na aviação.</p>
+        </li>
+        <li class="step">
+          <span class="step__code">Etapa 02</span>
+          <h3 class="step__title">Preenche sua candidatura</h3>
+          <p class="step__text">Informa seus dados e a vaga da Azul em que você se inscreveu na Gupy.</p>
+        </li>
+        <li class="step">
+          <span class="step__code">Etapa 03</span>
+          <h3 class="step__title">A Lito indica você</h3>
+          <p class="step__text">Encaminhamos sua indicação ao Recrutamento e Seleção da Azul Linhas Aéreas.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ AVISO ============ -->
+    <section class="section aviso" id="aviso">
+      <div class="aviso__card">
+        <div class="aviso__flag" aria-hidden="true">⚠</div>
+        <div class="aviso__body">
+          <p class="aviso__tag">Atenção · Requisito obrigatório</p>
+          <p class="aviso__text">
+            É imprescindível que seu currículo esteja atualizado e informe,
+            <strong>obrigatoriamente</strong>, que você é estudante da Lito Academy —
+            especificando também os cursos realizados. Sem isso, não é possível
+            corroborar sua indicação.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FORMULÁRIO (CARTÃO DE EMBARQUE) ============ -->
+    <section class="section formsec" id="formulario">
+      <header class="section__head">
+        <p class="kicker">Cartão de embarque</p>
+        <h2 class="section__title">Preencha sua candidatura</h2>
+        <p class="section__sub">Todos os campos são obrigatórios. Leva cerca de 3 minutos.</p>
+      </header>
+
+      <form class="pass" id="candidaturaForm" novalidate>
+        <!-- Cabeçalho do cartão -->
+        <div class="pass__header">
+          <span class="pass__brand">Cartão de embarque · Boarding pass</span>
+          <div class="pass__route">
+            <span>LITO</span>
+            <span class="pass__routeicon" aria-hidden="true">✈</span>
+            <span>AZUL</span>
+          </div>
+        </div>
+
+        <div class="pass__perf" aria-hidden="true"></div>
+
+        <div class="pass__body">
+          <!-- Grupo: Passageiro -->
+          <fieldset class="grp">
+            <legend class="grp__legend"><span class="grp__num">01</span> Passageiro</legend>
+
+            <div class="field">
+              <label for="nome">Nome completo</label>
+              <input type="text" id="nome" name="nome" autocomplete="name" required
+                     placeholder="Como no seu documento" />
+              <p class="field__err" data-err-for="nome"></p>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="cpf">CPF</label>
+                <input type="text" id="cpf" name="cpf" inputmode="numeric" required
+                       placeholder="000.000.000-00" maxlength="14" autocomplete="off" />
+                <p class="field__err" data-err-for="cpf"></p>
+              </div>
+
+              <div class="field">
+                <label for="email">E-mail usado no cadastro da Gupy</label>
+                <input type="email" id="email" name="email" autocomplete="email" required
+                       placeholder="voce@email.com" />
+                <p class="field__err" data-err-for="email"></p>
+              </div>
+            </div>
+
+            <div class="upload">
+              <span class="upload__caption">Anexe seu currículo</span>
+              <label class="dropzone">
+                <input type="file" id="curriculo" name="curriculo" required
+                       aria-label="Anexe seu currículo (PDF, DOC ou DOCX, até 8 MB)"
+                       accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                <span class="dropzone__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                </span>
+                <span class="dropzone__main" id="dropzoneText">Arraste aqui ou <u>clique para escolher</u></span>
+                <span class="dropzone__hint">PDF, DOC ou DOCX · até 8 MB</span>
+              </label>
+              <p class="field__err" data-err-for="curriculo"></p>
+            </div>
+          </fieldset>
+
+          <div class="pass__perf pass__perf--inner" aria-hidden="true"></div>
+
+          <!-- Grupo: Voo pretendido -->
+          <fieldset class="grp">
+            <legend class="grp__legend"><span class="grp__num">02</span> Voo pretendido</legend>
+
+            <div class="field">
+              <label for="cursos">Qual(is) curso(s) você realizou/realiza na Lito Academy?</label>
+              <textarea id="cursos" name="cursos" rows="3" required
+                        placeholder="Ex.: Comissário de Voo, Agente de Aeroporto..."></textarea>
+              <p class="field__err" data-err-for="cursos"></p>
+            </div>
+
+            <div class="field">
+              <label for="vaga">Para qual vaga da Azul Linhas Aéreas você se inscreveu?</label>
+              <input type="text" id="vaga" name="vaga" required
+                     placeholder="Título da vaga na Gupy" />
+              <p class="field__err" data-err-for="vaga"></p>
+            </div>
+          </fieldset>
+
+          <div class="pass__perf pass__perf--inner" aria-hidden="true"></div>
+
+          <!-- Grupo: Checklist de embarque -->
+          <fieldset class="grp">
+            <legend class="grp__legend"><span class="grp__num">03</span> Checklist de embarque</legend>
+
+            <div class="confirm" data-confirm="cvAtualizado">
+              <p class="confirm__q">Seu currículo está atualizado?</p>
+              <div class="seg" role="radiogroup" aria-label="Seu currículo está atualizado?">
+                <label class="seg__opt"><input type="radio" name="cvAtualizado" value="Sim" required /><span>Sim</span></label>
+                <label class="seg__opt"><input type="radio" name="cvAtualizado" value="Não" /><span>Não</span></label>
+              </div>
+              <p class="field__err" data-err-for="cvAtualizado"></p>
+            </div>
+
+            <div class="confirm" data-confirm="cvInformaLito">
+              <p class="confirm__q">Seu currículo informa que você é aluno(a) da Lito Academy e especifica o(s) curso(s) realizado(s)?</p>
+              <div class="seg" role="radiogroup" aria-label="Seu currículo informa que você é aluno da Lito e especifica os cursos?">
+                <label class="seg__opt"><input type="radio" name="cvInformaLito" value="Sim" required /><span>Sim</span></label>
+                <label class="seg__opt"><input type="radio" name="cvInformaLito" value="Não" /><span>Não</span></label>
+              </div>
+              <p class="field__err" data-err-for="cvInformaLito"></p>
+            </div>
+
+            <div class="confirm" data-confirm="leuVaga">
+              <p class="confirm__q">Você leu atentamente a descrição da vaga e confirma que atende aos requisitos mínimos exigidos para a posição?</p>
+              <div class="seg" role="radiogroup" aria-label="Você leu a descrição da vaga e atende aos requisitos mínimos?">
+                <label class="seg__opt"><input type="radio" name="leuVaga" value="Sim" required /><span>Sim</span></label>
+                <label class="seg__opt"><input type="radio" name="leuVaga" value="Não" /><span>Não</span></label>
+              </div>
+              <p class="field__err" data-err-for="leuVaga"></p>
+            </div>
+
+            <div class="confirm confirm--consent" data-confirm="autorizaCompartilhar">
+              <p class="confirm__q">Você autoriza a Lito Academy a compartilhar seus dados e currículo com o time de Recrutamento e Seleção da Azul Linhas Aéreas para fins de indicação neste processo seletivo?</p>
+              <div class="seg" role="radiogroup" aria-label="Você autoriza o compartilhamento dos seus dados com a Azul?">
+                <label class="seg__opt"><input type="radio" name="autorizaCompartilhar" value="Sim" required /><span>Sim</span></label>
+                <label class="seg__opt"><input type="radio" name="autorizaCompartilhar" value="Não" /><span>Não</span></label>
+              </div>
+              <p class="field__err" data-err-for="autorizaCompartilhar"></p>
+            </div>
+
+            <div class="confirm" data-confirm="infoVerdadeiras">
+              <p class="confirm__q">As informações fornecidas neste formulário são verdadeiras e estão atualizadas?</p>
+              <div class="seg" role="radiogroup" aria-label="As informações são verdadeiras e atualizadas?">
+                <label class="seg__opt"><input type="radio" name="infoVerdadeiras" value="Sim" required /><span>Sim</span></label>
+                <label class="seg__opt"><input type="radio" name="infoVerdadeiras" value="Não" /><span>Não</span></label>
+              </div>
+              <p class="field__err" data-err-for="infoVerdadeiras"></p>
+            </div>
+          </fieldset>
+
+          <div class="pass__submit">
+            <p class="pass__formerr" id="formError" role="alert" hidden></p>
+            <button type="submit" class="btn btn--primary btn--block" id="submitBtn">
+              Confirmar candidatura <span aria-hidden="true">✈</span>
+            </button>
+            <p class="pass__note">Ao confirmar, sua indicação é registrada para envio à Azul Linhas Aéreas.</p>
+          </div>
+        </div>
+      </form>
+
+      <!-- Tela de sucesso (stub emitido) -->
+      <div class="issued" id="successCard" hidden>
+        <div class="issued__perf" aria-hidden="true"></div>
+        <div class="issued__body">
+          <p class="issued__status">Check-in confirmado</p>
+          <h2 class="issued__title">Indicação registrada, <span id="successName">candidato(a)</span>!</h2>
+          <p class="issued__text">
+            Sua candidatura foi recebida. A Lito Academy vai encaminhar sua indicação ao
+            time de Recrutamento e Seleção da Azul Linhas Aéreas.
+          </p>
+          <dl class="issued__meta">
+            <div><dt>Rota</dt><dd>LITO ✈ AZUL</dd></div>
+            <div><dt>Localizador</dt><dd id="successCode">—</dd></div>
+            <div><dt>Status</dt><dd>Enviada</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="site-footer__brand">
+      <span class="wordmark__lito">LITO<span class="wordmark__thin">ACADEMY</span></span>
+      <span aria-hidden="true">·</span>
+      <span>Parceria com a Azul Linhas Aéreas</span>
+    </div>
+    <p class="site-footer__fine">
+      Programa de indicação exclusivo para alunos da Lito Academy. Os dados informados são
+      utilizados apenas para fins de indicação neste processo seletivo.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

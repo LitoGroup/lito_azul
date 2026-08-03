@@ -1,0 +1,14 @@
+# Dependências / build
+node_modules/
+dist/
+.cache/
+
+# SO / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Ferramentas locais
+.claude/
+.code-review-graph/
