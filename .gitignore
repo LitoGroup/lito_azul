@@ -12,3 +12,6 @@ Thumbs.db
 # Ferramentas locais
 .claude/
 .code-review-graph/
+
+# Credenciais — gerado no deploy a partir de variáveis de ambiente
+supabase-config.js

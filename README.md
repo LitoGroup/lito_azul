@@ -14,7 +14,10 @@ candidaturas como cards. Site estático (`HTML + CSS + JS`) + **Supabase** (banc
 | `painel.html`        | Painel interno (login + cards das candidaturas) |
 | `painel.css`         | Estilos do painel |
 | `painel.js`          | Login, listagem, filtros, status, download de currículo, tempo real |
-| `supabase-config.js` | URL + chave **anon** (pública) compartilhada pelas duas páginas |
+| `supabase-config.js` | URL + chave **anon** — **fora do Git**; local: copie do `.example`; deploy: gerado por `build-config.mjs` |
+| `supabase-config.example.js` | Modelo sem credenciais (este sim vai pro Git) |
+| `build-config.mjs`   | Gera o `supabase-config.js` no deploy a partir de `SUPABASE_URL` e `SUPABASE_ANON_KEY` |
+| `vercel.json`        | Build da Vercel (roda o gerador acima) |
 | `supabase-setup.sql` | Script que cria tabelas, políticas de segurança e bucket |
 | `img/`               | Logos (`lito.png`, `azul.png`) |
 
