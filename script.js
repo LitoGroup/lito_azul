@@ -3,30 +3,93 @@
    ========================================================= */
 
 /* ---------------------------------------------------------
-   BACKEND — ponto único de integração.
-   Deixe ENDPOINT como "" enquanto não houver backend: o
-   formulário valida e mostra a tela de sucesso (modo demo).
-   Quando o backend estiver pronto, coloque a URL abaixo.
-   A função recebe um objeto `dados` com os campos do form.
+   BACKEND — Supabase (ponto único de integração).
+   O envio faz duas coisas:
+     1. sobe o currículo para o Storage (bucket privado);
+     2. grava a candidatura na tabela (via chave anon + RLS).
+   Se o Supabase não estiver carregado (ex.: abrir o arquivo
+   sem os scripts), cai em modo demo: valida e mostra a tela
+   de sucesso sem enviar nada.
    --------------------------------------------------------- */
-const ENDPOINT = ""; // TODO: URL do backend (ex.: "https://api.seudominio.com/indicacoes")
-
 async function enviarCandidatura(formData) {
-  if (!ENDPOINT) {
-    // Modo demo — nada é enviado ainda.
+  const sb = window.sb;
+  const cfg = window.LAZ_CONFIG || {};
+
+  // Sem Supabase → modo demo.
+  if (!sb) {
     const resumo = {};
     for (const [k, v] of formData.entries()) {
       resumo[k] = v instanceof File ? `${v.name} (${Math.round(v.size / 1024)} KB)` : v;
     }
-    console.info("[Lito x Azul] Backend não configurado. Dados capturados:", resumo);
-    await new Promise((r) => setTimeout(r, 600)); // simula latência
+    console.info("[Lito x Azul] Supabase não configurado. Dados capturados:", resumo);
+    await new Promise((r) => setTimeout(r, 500));
     return { ok: true, simulado: true };
   }
 
-  // Envio multipart (inclui o arquivo do currículo). Não defina Content-Type:
-  // o navegador cria o boundary correto automaticamente.
-  const res = await fetch(ENDPOINT, { method: "POST", body: formData });
-  if (!res.ok) throw new Error("Falha no envio (" + res.status + ")");
+  // 1) Upload do currículo para o Storage (bucket privado).
+  const file = formData.get("curriculo");
+  const ext = (file.name.split(".").pop() || "bin").toLowerCase();
+  const base =
+    file.name
+      .replace(/\.[^.]+$/, "")
+      .normalize("NFD")
+      .replace(/[^\x00-\x7F]+/g, "")
+      .replace(/[^a-zA-Z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60) || "curriculo";
+  const pasta =
+    (crypto.randomUUID && crypto.randomUUID()) ||
+    Date.now() + "-" + Math.random().toString(16).slice(2);
+  const path = `${pasta}/${base}.${ext}`;
+
+  const up = await sb.storage.from(cfg.bucket).upload(path, file, {
+    cacheControl: "3600",
+    upsert: false,
+    contentType: file.type || undefined,
+  });
+  if (up.error) throw new Error("Falha ao enviar o currículo: " + up.error.message);
+
+  // 1b) Upload da foto (opcional) — mesmo bucket, subpasta do envio.
+  let fotoPath = null;
+  const foto = formData.get("foto");
+  if (foto && foto instanceof File && foto.size > 0) {
+    const fext = (foto.name.split(".").pop() || "jpg").toLowerCase();
+    const fup = await sb.storage.from(cfg.bucket).upload(`${pasta}/foto.${fext}`, foto, {
+      cacheControl: "3600",
+      upsert: false,
+      contentType: foto.type || undefined,
+    });
+    // Foto é opcional: se falhar, segue sem ela (não trava a candidatura).
+    if (!fup.error) fotoPath = fup.data.path;
+  }
+
+  // 2) Grava a candidatura na tabela.
+  const registro = {
+    nome: (formData.get("nome") || "").trim(),
+    cpf: formData.get("cpf") || "",
+    email: (formData.get("email") || "").trim(),
+    cursos: (formData.get("cursos") || "").trim(),
+    vaga: (formData.get("vaga") || "").trim(),
+    curriculo_path: up.data.path,
+    curriculo_nome: file.name,
+    foto_path: fotoPath,
+    cv_atualizado: formData.get("cvAtualizado") || "",
+    cv_informa_lito: formData.get("cvInformaLito") || "",
+    leu_vaga: formData.get("leuVaga") || "",
+    autoriza_compartilhar: formData.get("autorizaCompartilhar") || "",
+    info_verdadeiras: formData.get("infoVerdadeiras") || "",
+    enviado_em: formData.get("enviadoEm") || new Date().toISOString(),
+  };
+
+  const ins = await sb.from(cfg.tabela).insert(registro);
+  if (ins.error) {
+    // Remove o arquivo órfão se a gravação falhar.
+    try {
+      await sb.storage.from(cfg.bucket).remove([up.data.path]);
+    } catch (_) {}
+    throw new Error("Falha ao registrar a candidatura: " + ins.error.message);
+  }
+
   return { ok: true };
 }
 
@@ -135,6 +198,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Foto (opcional): valida, mostra preview circular, permite remover
+  const FOTO_MAX_MB = 4;
+  const fotoInput = document.getElementById("foto");
+  const fotoWrap = fotoInput.closest(".fotoup");
+  const fotoPreview = document.getElementById("fotoPreview");
+  const fotoPh = document.getElementById("fotoPh");
+  const fotoRemove = document.getElementById("fotoRemove");
+
+  function resetFoto() {
+    fotoInput.value = "";
+    fotoPreview.hidden = true;
+    fotoPreview.removeAttribute("src");
+    fotoPh.hidden = false;
+    fotoRemove.hidden = true;
+    fotoWrap.classList.remove("has-foto");
+  }
+
+  fotoInput.addEventListener("change", () => {
+    limparErro("foto");
+    const f = fotoInput.files[0];
+    if (!f) return resetFoto();
+    if (!/^image\/(png|jpe?g|webp)$/i.test(f.type)) {
+      mostrarErro("foto", "Envie uma imagem JPG, PNG ou WEBP.");
+      return resetFoto();
+    }
+    if (f.size > FOTO_MAX_MB * 1024 * 1024) {
+      mostrarErro("foto", "Foto muito grande (máx. " + FOTO_MAX_MB + " MB).");
+      return resetFoto();
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      fotoPreview.src = reader.result;
+      fotoPreview.hidden = false;
+      fotoPh.hidden = true;
+      fotoRemove.hidden = false;
+      fotoWrap.classList.add("has-foto");
+    };
+    reader.readAsDataURL(f);
+  });
+
+  fotoRemove.addEventListener("click", () => {
+    limparErro("foto");
+    resetFoto();
+  });
+
   // Limpa o erro do campo ao editar/selecionar
   form.addEventListener("input", (e) => {
     const name = e.target.name;
@@ -159,6 +267,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    // Honeypot: bots preenchem o campo invisível. Finge sucesso
+    // (sem enviar nada) para o bot não aprender.
+    const hp = form.elements.website;
+    if (hp && hp.value.trim() !== "") {
+      mostrarSucesso(form.elements.nome.value || "Candidato");
+      return;
+    }
+
     formError.hidden = true;
     let primeiroInvalido = null;
 
@@ -211,8 +328,13 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarSucesso(nome);
     } catch (err) {
       console.error(err);
-      formError.textContent =
-        "Não foi possível enviar agora. Verifique sua conexão e tente novamente.";
+      // Mensagens de limite (rate limit) vêm do banco em português —
+      // mostra a mensagem real; outros erros ficam genéricos.
+      const msg = String((err && err.message) || "");
+      const ehLimite = /limite|muitos envios|muitos arquivos|cpf hoje|aguarde/i.test(msg);
+      formError.textContent = ehLimite
+        ? msg.replace(/^.*?:\s*/, "")
+        : "Não foi possível enviar agora. Verifique sua conexão e tente novamente.";
       formError.hidden = false;
       submitBtn.disabled = false;
       submitBtn.innerHTML = textoOriginal;

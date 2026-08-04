@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://forgottenperch-supabase.cloudfy.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="no-referrer" />
   <title>Benefício Exclusivo · Alunos Lito Academy ✈ Azul Linhas Aéreas</title>
   <meta name="description" content="Programa de indicação da Lito Academy em parceria com a Azul Linhas Aéreas. Alunos Lito podem enviar sua candidatura para as vagas da Azul." />
 
@@ -15,10 +17,10 @@
 <body>
   <!-- ============ HEADER ============ -->
   <header class="site-header">
-    <a class="wordmark" href="#topo" aria-label="Lito Academy e Azul Linhas Aéreas">
-      <span class="wordmark__lito">LITO<span class="wordmark__thin">ACADEMY</span></span>
-      <span class="wordmark__route" aria-hidden="true">✈</span>
-      <span class="wordmark__azul">AZUL</span>
+    <a class="cobrand cobrand--sm" href="#topo" aria-label="Lito Aviation Academy e Azul Linhas Aéreas — parceria oficial">
+      <img class="cobrand__logo cobrand__logo--lito" src="img/lito.png" width="4000" height="1868" alt="Lito Aviation Academy" />
+      <span class="cobrand__x" aria-hidden="true">×</span>
+      <img class="cobrand__logo cobrand__logo--azul" src="img/azul.png" width="2872" height="784" alt="Azul Linhas Aéreas" />
     </a>
     <nav class="site-nav">
       <a href="#beneficio">Como funciona</a>
@@ -33,7 +35,14 @@
       <div class="hero__glow" aria-hidden="true"></div>
 
       <div class="hero__inner">
-        <p class="eyebrow">Benefício exclusivo · Alunos Lito Academy</p>
+        <div class="hero__seal">
+          <span class="cobrand cobrand--lg">
+            <img class="cobrand__logo cobrand__logo--lito" src="img/lito.png" width="4000" height="1868" alt="Lito Aviation Academy" />
+            <span class="cobrand__x" aria-hidden="true">×</span>
+            <img class="cobrand__logo cobrand__logo--azul" src="img/azul.png" width="2872" height="784" alt="Azul Linhas Aéreas" />
+          </span>
+          <span class="hero__seal-label">Parceria oficial · Benefício exclusivo para alunos Lito</span>
+        </div>
 
         <h1 class="hero__title">
           Sua indicação para a <span class="hl">Azul&nbsp;Linhas&nbsp;Aéreas</span> decola aqui.
@@ -123,14 +132,19 @@
       </header>
 
       <form class="pass" id="candidaturaForm" novalidate>
+        <!-- Honeypot anti-bot: humanos não veem nem preenchem este campo -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Não preencha este campo</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
         <!-- Cabeçalho do cartão -->
         <div class="pass__header">
           <span class="pass__brand">Cartão de embarque · Boarding pass</span>
-          <div class="pass__route">
-            <span>LITO</span>
-            <span class="pass__routeicon" aria-hidden="true">✈</span>
-            <span>AZUL</span>
-          </div>
+          <span class="cobrand cobrand--sm">
+            <img class="cobrand__logo cobrand__logo--lito" src="img/lito.png" width="4000" height="1868" alt="Lito Aviation Academy" />
+            <span class="cobrand__x" aria-hidden="true">×</span>
+            <img class="cobrand__logo cobrand__logo--azul" src="img/azul.png" width="2872" height="784" alt="Azul Linhas Aéreas" />
+          </span>
         </div>
 
         <div class="pass__perf" aria-hidden="true"></div>
@@ -139,6 +153,24 @@
           <!-- Grupo: Passageiro -->
           <fieldset class="grp">
             <legend class="grp__legend"><span class="grp__num">01</span> Passageiro</legend>
+
+            <!-- Foto (opcional) -->
+            <div class="fotoup">
+              <label class="fotoup__ring" for="foto">
+                <input type="file" id="foto" name="foto" accept="image/png,image/jpeg,image/webp"
+                       aria-label="Foto do candidato (opcional, JPG, PNG ou WEBP, até 4 MB)" />
+                <img class="fotoup__img" id="fotoPreview" alt="" hidden />
+                <span class="fotoup__ph" id="fotoPh" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </span>
+              </label>
+              <div class="fotoup__info">
+                <span class="fotoup__title">Foto <span class="fotoup__opt">(opcional)</span></span>
+                <span class="fotoup__hint">Uma foto sua de rosto · JPG, PNG ou WEBP · até 4 MB</span>
+                <button type="button" class="fotoup__remove" id="fotoRemove" hidden>Remover foto</button>
+              </div>
+              <p class="field__err" data-err-for="foto"></p>
+            </div>
 
             <div class="field">
               <label for="nome">Nome completo</label>
@@ -285,9 +317,11 @@
   <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
     <div class="site-footer__brand">
-      <span class="wordmark__lito">LITO<span class="wordmark__thin">ACADEMY</span></span>
-      <span aria-hidden="true">·</span>
-      <span>Parceria com a Azul Linhas Aéreas</span>
+      <span class="cobrand cobrand--sm">
+        <img class="cobrand__logo cobrand__logo--lito" src="img/lito.png" width="4000" height="1868" alt="Lito Aviation Academy" />
+        <span class="cobrand__x" aria-hidden="true">×</span>
+        <img class="cobrand__logo cobrand__logo--azul" src="img/azul.png" width="2872" height="784" alt="Azul Linhas Aéreas" />
+      </span>
     </div>
     <p class="site-footer__fine">
       Programa de indicação exclusivo para alunos da Lito Academy. Os dados informados são
@@ -295,6 +329,11 @@
     </p>
   </footer>
 
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.js"
+    integrity="sha384-3lSoufGjgosjqp3JDr/NReX3PjMd3SlC8wJ23CWFjB6DSFNf71I0DhcRTUm9MwgO"
+    crossorigin="anonymous"></script>
+  <script src="supabase-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

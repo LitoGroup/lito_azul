@@ -94,6 +94,38 @@ img, svg { display: block; max-width: 100%; }
 .site-nav > a:not(.btn):hover { color: #fff; border-color: var(--ambar); }
 
 /* =========================================================
+   CO-BRAND — selo de parceria (Lito × Azul)
+   Pílula clara: as duas marcas nas cores reais em qualquer fundo
+   ========================================================= */
+.cobrand {
+  display: inline-flex; align-items: center; gap: .8rem;
+  padding: .5rem .95rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px -14px rgba(8, 25, 48, .55);
+  transition: box-shadow .2s ease, transform .15s ease;
+}
+a.cobrand:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgba(8, 25, 48, .6); }
+.cobrand__logo { display: block; width: auto; }
+.cobrand__logo--lito { height: 30px; }
+.cobrand__logo--azul { height: 20px; }
+.cobrand__x {
+  align-self: center; color: #b7c2d4; font-weight: 400; font-size: 1rem; line-height: 1;
+  transform: translateY(-1px);
+}
+
+.cobrand--sm { padding: .38rem .7rem; gap: .6rem; }
+.cobrand--sm .cobrand__logo--lito { height: 22px; }
+.cobrand--sm .cobrand__logo--azul { height: 15px; }
+.cobrand--sm .cobrand__x { font-size: .85rem; }
+
+.cobrand--lg { padding: .65rem 1.15rem; gap: 1rem; }
+.cobrand--lg .cobrand__logo--lito { height: 42px; }
+.cobrand--lg .cobrand__logo--azul { height: 28px; }
+.cobrand--lg .cobrand__x { font-size: 1.2rem; }
+
+/* =========================================================
    BOTÕES
    ========================================================= */
 .btn {
@@ -144,6 +176,11 @@ img, svg { display: block; max-width: 100%; }
   position: relative; z-index: 1;
   max-width: var(--maxw); margin: 0 auto;
   padding: clamp(3.5rem, 9vw, 6.5rem) clamp(1rem, 4vw, 2.5rem) clamp(3rem, 7vw, 5rem);
+}
+.hero__seal { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.1rem; margin-bottom: 1.8rem; }
+.hero__seal-label {
+  font-family: var(--f-mono); text-transform: uppercase; letter-spacing: .16em;
+  font-size: .68rem; font-weight: 700; color: rgba(233, 240, 250, .72);
 }
 .eyebrow { color: var(--ambar); display: inline-block; margin-bottom: 1.2rem; }
 .hero__title {
@@ -265,11 +302,6 @@ img, svg { display: block; max-width: 100%; }
   font-family: var(--f-mono); text-transform: uppercase; letter-spacing: .14em;
   font-size: .72rem; color: rgba(255,255,255,.8);
 }
-.pass__route {
-  display: inline-flex; align-items: center; gap: .6rem;
-  font-family: var(--f-mono); font-weight: 700; font-size: 1.15rem; letter-spacing: .05em;
-}
-.pass__routeicon { color: var(--ambar); }
 
 /* Perfuração (picote) */
 .pass__perf {
@@ -349,6 +381,50 @@ img, svg { display: block; max-width: 100%; }
 .dropzone.has-file { border-style: solid; border-color: var(--ok); background: #f0faf5; }
 .dropzone.has-file .dropzone__icon, .dropzone.has-file .dropzone__main { color: var(--ok); }
 .dropzone.has-file .dropzone__main u { border: 0; }
+
+/* Honeypot anti-bot: fora da tela, invisível para humanos */
+.hp {
+  position: absolute !important; left: -9999px !important;
+  width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;
+}
+
+/* Foto do candidato (opcional) — seletor de avatar circular */
+.fotoup {
+  display: grid; grid-template-columns: auto 1fr; align-items: center;
+  gap: .35rem 1.1rem; margin-bottom: 1.4rem;
+}
+.fotoup__ring {
+  position: relative; width: 92px; height: 92px; border-radius: 50%;
+  border: 2px dashed var(--line-strong); background: #fbfdff;
+  display: grid; place-items: center; cursor: pointer; overflow: hidden;
+  color: var(--azul); transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.fotoup__ring:hover { border-color: var(--azul); background: #f2f8ff; }
+.fotoup__ring:focus-within { outline: 2px solid var(--ceu); outline-offset: 3px; }
+.fotoup__ring input {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  opacity: 0; overflow: hidden;
+}
+.fotoup__img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.fotoup__ph { display: grid; place-items: center; }
+.fotoup.has-foto .fotoup__ring { border-style: solid; border-color: var(--ok); }
+.fotoup.has-foto .fotoup__ph { display: none; }
+
+.fotoup__info { display: flex; flex-direction: column; gap: .15rem; }
+.fotoup__title { font-weight: 600; font-size: .95rem; color: var(--tinta); }
+.fotoup__opt { font-weight: 500; color: var(--muted); }
+.fotoup__hint {
+  font-family: var(--f-mono); font-size: .68rem; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
+.fotoup__remove {
+  align-self: flex-start; margin-top: .35rem;
+  font-family: var(--f-body); font-weight: 600; font-size: .82rem;
+  color: var(--erro); background: none; border: 0; padding: 0; cursor: pointer;
+  border-bottom: 1.5px solid transparent;
+}
+.fotoup__remove:hover { border-color: currentColor; }
+.fotoup .field__err { grid-column: 1 / -1; }
 
 /* Confirmações Sim/Não (segmented) */
 .confirm { margin-bottom: 1.4rem; }

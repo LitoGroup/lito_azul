@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://forgottenperch-supabase.cloudfy.live wss://forgottenperch-supabase.cloudfy.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://forgottenperch-supabase.cloudfy.live; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Painel de indicações · Lito x Azul</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="painel.css" />
+</head>
+<body class="painel">
+
+  <!-- ============ LOGIN ============ -->
+  <section class="login" id="loginView" hidden>
+    <form class="login__card" id="loginForm" novalidate>
+      <a class="cobrand" href="index.html" aria-label="Lito Aviation Academy e Azul Linhas Aéreas">
+        <img class="cobrand__logo cobrand__logo--lito" src="img/lito.png" width="4000" height="1868" alt="Lito Aviation Academy" />
+        <span class="cobrand__x" aria-hidden="true">×</span>
+        <img class="cobrand__logo cobrand__logo--azul" src="img/azul.png" width="2872" height="784" alt="Azul Linhas Aéreas" />
+      </a>
+
+      <h1 class="login__title">Painel de indicações</h1>
+      <p class="login__sub">Acesso restrito à equipe da Lito Academy.</p>
+
+      <div class="field">
+        <label for="loginEmail">E-mail</label>
+        <input id="loginEmail" type="email" autocomplete="username" required />
+      </div>
+      <div class="field">
+        <label for="loginSenha">Senha</label>
+        <input id="loginSenha" type="password" autocomplete="current-password" required />
+      </div>
+
+      <p class="login__err" id="loginErr" role="alert" hidden></p>
+      <button class="btn btn--primary btn--block" id="loginBtn" type="submit">Entrar</button>
+    </form>
+  </section>
+
+  <!-- ============ 2FA: CÓDIGO NO LOGIN ============ -->
+  <section class="login" id="totpView" hidden>
+    <form class="login__card" id="totpForm" novalidate>
+      <span class="cobrand">
+        <img class="cobrand__logo cobrand__logo--lito" src="img/lito.png" width="4000" height="1868" alt="Lito Aviation Academy" />
+        <span class="cobrand__x" aria-hidden="true">×</span>
+        <img class="cobrand__logo cobrand__logo--azul" src="img/azul.png" width="2872" height="784" alt="Azul Linhas Aéreas" />
+      </span>
+
+      <h1 class="login__title">Verificação em 2 etapas</h1>
+      <p class="login__sub">Digite o código de 6 dígitos do seu aplicativo autenticador.</p>
+
+      <div class="field">
+        <label for="totpCode">Código</label>
+        <input id="totpCode" type="text" inputmode="numeric" autocomplete="one-time-code"
+               maxlength="6" placeholder="000000" class="totp__input" />
+      </div>
+
+      <p class="login__err" id="totpErr" role="alert" hidden></p>
+      <button class="btn btn--primary btn--block" id="totpBtn" type="submit">Validar</button>
+      <button class="totp__cancel" id="totpSair" type="button">Cancelar e sair</button>
+    </form>
+  </section>
+
+  <!-- ============ APP ============ -->
+  <div class="app" id="appView" hidden>
+    <header class="app__bar">
+      <a class="cobrand cobrand--sm" href="index.html" aria-label="Lito Aviation Academy e Azul Linhas Aéreas">
+        <img class="cobrand__logo cobrand__logo--lito" src="img/lito.png" width="4000" height="1868" alt="Lito Aviation Academy" />
+        <span class="cobrand__x" aria-hidden="true">×</span>
+        <img class="cobrand__logo cobrand__logo--azul" src="img/azul.png" width="2872" height="784" alt="Azul Linhas Aéreas" />
+      </a>
+
+      <div class="app__title">
+        <span class="app__eyebrow">Programa de indicação</span>
+        <strong>Painel de candidaturas</strong>
+      </div>
+
+      <div class="app__user">
+        <span class="app__role" id="userRole" hidden></span>
+        <span class="app__email" id="userEmail"></span>
+        <button class="btn btn--ghost" id="mfaBtn" type="button" title="Verificação em 2 etapas">2FA</button>
+        <button class="btn btn--ghost" id="logoutBtn" type="button">Sair</button>
+      </div>
+    </header>
+
+    <nav class="views" aria-label="Áreas do painel">
+      <button class="view-tab is-active" type="button" data-view="candidaturas">Candidaturas</button>
+      <button class="view-tab" type="button" data-view="vagas">Vagas da Azul</button>
+      <button class="view-tab" type="button" data-view="equipe" id="tabEquipe" hidden>Equipe</button>
+    </nav>
+
+    <section id="viewCandidaturas">
+    <div class="app__toolbar">
+      <div class="filters" id="filters">
+        <button class="chip is-active" type="button" data-status="todas">Todas <span class="chip__n" data-count="todas">0</span></button>
+        <button class="chip" type="button" data-status="nova">Novas <span class="chip__n" data-count="nova">0</span></button>
+        <button class="chip" type="button" data-status="em_analise">Em análise <span class="chip__n" data-count="em_analise">0</span></button>
+        <button class="chip" type="button" data-status="indicada">Indicadas <span class="chip__n" data-count="indicada">0</span></button>
+        <button class="chip" type="button" data-status="arquivada">Arquivadas <span class="chip__n" data-count="arquivada">0</span></button>
+      </div>
+      <div class="toolbar__right">
+        <input class="search" id="search" type="search" placeholder="Buscar nome, e-mail, vaga..." aria-label="Buscar candidaturas" />
+        <button class="btn btn--line btn--sm" id="refreshBtn" type="button">Atualizar</button>
+      </div>
+    </div>
+
+    <p class="state" id="loadingState">Carregando candidaturas…</p>
+    <p class="state" id="emptyState" hidden>Nenhuma candidatura por aqui ainda.</p>
+    <main class="board" id="board" aria-live="polite"></main>
+    </section>
+
+    <!-- ============ VAGAS DA AZUL ============ -->
+    <section id="viewVagas" hidden>
+      <div class="vagas__top">
+        <div>
+          <h2 class="vagas__title">Vagas publicadas pela Azul</h2>
+          <p class="vagas__sub">Área interna — os alunos não veem este mural.</p>
+        </div>
+        <button class="btn btn--primary" id="novaVagaBtn" type="button">Publicar vaga</button>
+      </div>
+
+      <form class="vagaform" id="vagaForm" hidden>
+        <div class="vagaform__row">
+          <div class="field">
+            <label for="vagaTitulo">Título da vaga</label>
+            <input id="vagaTitulo" type="text" required placeholder="Ex.: Comissário de Voo" />
+          </div>
+          <div class="field">
+            <label for="vagaLocal">Base / cidade</label>
+            <input id="vagaLocal" type="text" placeholder="Ex.: VCP — Campinas" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="vagaLink">Link da vaga na Gupy</label>
+          <input id="vagaLink" type="url" placeholder="https://azul.gupy.io/..." />
+        </div>
+        <div class="field">
+          <label for="vagaDesc">Requisitos / observações</label>
+          <textarea id="vagaDesc" rows="3" placeholder="Requisitos mínimos, turno, prazo..."></textarea>
+        </div>
+        <p class="login__err" id="vagaErr" role="alert" hidden></p>
+        <div class="vagaform__actions">
+          <button class="btn btn--primary" id="vagaSalvarBtn" type="submit">Publicar</button>
+          <button class="btn btn--line btn--sm" id="vagaCancelarBtn" type="button">Cancelar</button>
+        </div>
+      </form>
+
+      <p class="state" id="vagasLoading" hidden>Carregando vagas…</p>
+      <p class="state" id="vagasEmpty" hidden>Nenhuma vaga publicada ainda.</p>
+      <div class="vagas" id="vagasList" aria-live="polite"></div>
+    </section>
+
+    <!-- ============ EQUIPE (só admin) ============ -->
+    <section id="viewEquipe" hidden>
+      <div class="vagas__top">
+        <div>
+          <h2 class="vagas__title">Equipe do painel</h2>
+          <p class="vagas__sub">
+            Quem acessa este painel e o que cada um pode fazer:
+            <strong>Admin</strong> tudo · <strong>Azul</strong> publica vagas e move candidatos ·
+            <strong>Lito</strong> só visualiza.
+          </p>
+        </div>
+      </div>
+
+      <form class="vagaform equipeform" id="equipeForm">
+        <div class="equipeform__row">
+          <div class="field">
+            <label for="membroEmail">E-mail do novo membro</label>
+            <input id="membroEmail" type="email" required placeholder="pessoa@empresa.com" />
+          </div>
+          <div class="field">
+            <label for="membroPapel">Papel</label>
+            <select id="membroPapel" class="cand__status equipe__select">
+              <option value="lito" selected>Lito — só visualiza</option>
+              <option value="azul">Azul — publica e move</option>
+              <option value="admin">Admin — acesso total</option>
+            </select>
+          </div>
+          <button class="btn btn--primary" id="membroAddBtn" type="submit">Adicionar</button>
+        </div>
+        <p class="equipeform__hint">
+          Adicionar aqui libera a permissão. Para a pessoa conseguir <em>entrar</em>, crie também o
+          login dela em <strong>Authentication → Users</strong> no Supabase Studio (mesmo e-mail).
+        </p>
+        <p class="login__err" id="equipeErr" role="alert" hidden></p>
+      </form>
+
+      <p class="state" id="equipeLoading" hidden>Carregando equipe…</p>
+      <div class="equipe" id="equipeList" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <!-- Modal de gestão do 2FA -->
+  <div class="fotomodal" id="mfaModal" hidden>
+    <button class="fotomodal__close" id="mfaClose" type="button" aria-label="Fechar">×</button>
+    <div class="mfacard">
+      <h2 class="mfacard__title">Verificação em 2 etapas</h2>
+      <div id="mfaBody"><!-- conteúdo montado pelo painel.js --></div>
+    </div>
+  </div>
+
+  <!-- Modal de foto ampliada -->
+  <div class="fotomodal" id="fotoModal" hidden>
+    <button class="fotomodal__close" id="fotoModalClose" type="button" aria-label="Fechar">×</button>
+    <figure class="fotomodal__box">
+      <img class="fotomodal__img" id="fotoModalImg" alt="Foto do candidato" />
+      <figcaption class="fotomodal__cap" id="fotoModalCap"></figcaption>
+    </figure>
+  </div>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.0/dist/umd/supabase.js"
+    integrity="sha384-3lSoufGjgosjqp3JDr/NReX3PjMd3SlC8wJ23CWFjB6DSFNf71I0DhcRTUm9MwgO"
+    crossorigin="anonymous"></script>
+  <script src="supabase-config.js"></script>
+  <script src="painel.js"></script>
+</body>
+</html>
