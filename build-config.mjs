@@ -19,6 +19,15 @@ if (!url || !anonKey) {
   process.exit(1);
 }
 
+// Chave colada mascarada (••••) ou com caracteres inválidos? Falha já no build.
+if (!/^[A-Za-z0-9._-]+$/.test(anonKey)) {
+  console.error(
+    "ERRO: SUPABASE_ANON_KEY contém caracteres inválidos (ex.: '•' de campo mascarado).\n" +
+    "Copie a chave REAL (começa com 'eyJ' e tem só letras, números, '.', '_' e '-')."
+  );
+  process.exit(1);
+}
+
 // Nunca aceite a chave privada aqui por engano.
 try {
   const payload = JSON.parse(
