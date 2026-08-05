@@ -103,6 +103,7 @@
   };
 
   const CHECKS = [
+    { k: "disponibilidade_mudanca", label: "Aceita mudança de estado" },
     { k: "cv_atualizado",         label: "Currículo atualizado" },
     { k: "cv_informa_lito",       label: "Cita a Lito no CV" },
     { k: "leu_vaga",              label: "Leu a vaga e atende requisitos" },

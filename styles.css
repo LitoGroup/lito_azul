@@ -351,6 +351,10 @@ a.cobrand:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgb
 }
 .field input:user-invalid { border-color: var(--erro); }
 
+.field__hint {
+  color: var(--muted); font-size: .82rem; margin: -.2rem 0 .5rem;
+}
+
 .field__err {
   color: var(--erro); font-size: .82rem; font-weight: 500; margin-top: .35rem; min-height: 0;
 }

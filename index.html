@@ -238,9 +238,19 @@
 
             <div class="field">
               <label for="vaga">Para qual vaga da Azul Linhas Aéreas você se inscreveu?</label>
+              <p class="field__hint">Coloque a descrição idêntica à da vaga em que você se candidatou na Gupy.</p>
               <input type="text" id="vaga" name="vaga" required
                      placeholder="Título da vaga na Gupy" />
               <p class="field__err" data-err-for="vaga"></p>
+            </div>
+
+            <div class="confirm" data-confirm="mudancaEstado">
+              <p class="confirm__q">Você tem disponibilidade para mudança de estado?</p>
+              <div class="seg" role="radiogroup" aria-label="Você tem disponibilidade para mudança de estado?">
+                <label class="seg__opt"><input type="radio" name="mudancaEstado" value="Sim" required /><span>Sim</span></label>
+                <label class="seg__opt"><input type="radio" name="mudancaEstado" value="Não" /><span>Não</span></label>
+              </div>
+              <p class="field__err" data-err-for="mudancaEstado"></p>
             </div>
           </fieldset>
 

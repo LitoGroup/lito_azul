@@ -73,6 +73,7 @@ async function enviarCandidatura(formData) {
     curriculo_path: up.data.path,
     curriculo_nome: file.name,
     foto_path: fotoPath,
+    disponibilidade_mudanca: formData.get("mudancaEstado") || "",
     cv_atualizado: formData.get("cvAtualizado") || "",
     cv_informa_lito: formData.get("cvInformaLito") || "",
     leu_vaga: formData.get("leuVaga") || "",
@@ -257,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     vaga: (v) => (v.trim().length >= 2 ? "" : "Informe a vaga da Azul em que se inscreveu."),
   };
   const confirmacoes = [
+    "mudancaEstado",
     "cvAtualizado",
     "cvInformaLito",
     "leuVaga",
