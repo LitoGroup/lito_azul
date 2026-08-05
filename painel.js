@@ -341,11 +341,26 @@
     const meta = el("p", "cand__meta", "Recebida em " + fmtData(i.criado_em));
 
     const grid = el("div", "cand__grid");
+
+    // Vaga em linha própria, com destaque (é a informação-chave).
+    const vagaBox = infoLinha("Vaga na Azul", i.vaga);
+    vagaBox.classList.add("info--full");
+    vagaBox.querySelector(".info__val").classList.add("info__val--forte");
+
+    // Cursos como etiquetas (em vez de texto corrido).
+    const cursosBox = el("div", "info info--full");
+    cursosBox.appendChild(el("span", "info__lb", "Cursos na Lito"));
+    const tags = el("div", "cursotags");
+    String(i.cursos || "").split(/,\s+/).filter(Boolean)
+      .forEach((c) => tags.appendChild(el("span", "cursotag", c)));
+    if (!tags.childElementCount) tags.appendChild(el("span", "cursotag", "—"));
+    cursosBox.appendChild(tags);
+
     grid.append(
       infoLinha("E-mail (Gupy)", i.email, true),
       infoLinha("CPF", i.cpf, true),
-      infoLinha("Vaga na Azul", i.vaga),
-      infoLinha("Cursos na Lito", i.cursos)
+      vagaBox,
+      cursosBox
     );
 
     const checks = el("div", "cand__checks");

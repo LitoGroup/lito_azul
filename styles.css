@@ -472,6 +472,10 @@ a.cobrand:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgb
 .confirm--consent {
   background: #f3f8fe; border: 1px solid #d4e6fb; border-left: 4px solid var(--azul);
   border-radius: 10px; padding: 1rem 1.1rem;
+  /* Compensa o padding/borda para o texto e o Sim/Não ficarem
+     alinhados com as outras perguntas (o box "vaza" pros lados). */
+  margin-left: calc(-1.1rem - 4px);
+  margin-right: calc(-1.1rem - 1px);
 }
 .seg {
   display: inline-grid; grid-template-columns: 1fr 1fr; gap: 6px;

@@ -231,26 +231,40 @@
 }
 
 .cand__grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: .7rem .9rem;
-  padding: .9rem 1.2rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: .85rem 1.1rem;
+  padding: 1rem 1.2rem;
 }
-.info { display: flex; flex-direction: column; gap: .12rem; min-width: 0; }
+.info { display: flex; flex-direction: column; gap: .22rem; min-width: 0; }
+.info--full { grid-column: 1 / -1; }
 .info__lb {
   font-family: var(--f-mono); font-size: .58rem; letter-spacing: .12em;
   text-transform: uppercase; color: var(--muted);
 }
-.info__val { font-size: .9rem; color: var(--tinta); word-break: break-word; }
+.info__val { font-size: .9rem; color: var(--tinta); overflow-wrap: anywhere; line-height: 1.35; }
+.info__val--forte { font-weight: 600; font-size: .98rem; }
 .info__val--copy { cursor: pointer; }
 .info__val--copy:hover { color: var(--azul); text-decoration: underline dotted; }
 .info__val.is-copied { color: var(--ok); font-weight: 600; }
 
-.cand__checks { display: flex; flex-wrap: wrap; gap: .4rem; padding: .1rem 1.2rem 1rem; }
-.check {
-  display: inline-flex; align-items: center; gap: .35rem;
-  font-size: .73rem; font-weight: 600; padding: .28rem .55rem;
-  border-radius: 999px; border: 1px solid transparent;
+/* Cursos como etiquetas */
+.cursotags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.cursotag {
+  font-size: .76rem; font-weight: 600; color: var(--azul-deep);
+  background: #eaf2fc; border: 1px solid #d4e4f7;
+  padding: .24rem .55rem; border-radius: 7px; line-height: 1.25;
 }
-.check__ic { font-weight: 800; }
+
+.cand__checks {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .4rem;
+  padding: .2rem 1.2rem 1.1rem;
+}
+.check {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .73rem; font-weight: 600; padding: .32rem .6rem;
+  border-radius: 8px; border: 1px solid transparent; min-width: 0;
+}
+.check__lb { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.check__ic { font-weight: 800; flex: none; }
 .check--ok   { background: #eefaf3; color: var(--ok);  border-color: #cdeede; }
 .check--warn { background: #fff6e6; color: #8a5a00;    border-color: #ffe0a6; }
 .check--crit { background: #fdece8; color: var(--erro); border-color: #f6cabf; }
