@@ -68,7 +68,7 @@ async function enviarCandidatura(formData) {
     nome: (formData.get("nome") || "").trim(),
     cpf: formData.get("cpf") || "",
     email: (formData.get("email") || "").trim(),
-    cursos: (formData.get("cursos") || "").trim(),
+    cursos: formData.getAll("cursos").join(", "),
     vaga: (formData.get("vaga") || "").trim(),
     curriculo_path: up.data.path,
     curriculo_nome: file.name,
@@ -254,7 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
     nome: (v) => (v.trim().length >= 3 ? "" : "Informe seu nome completo."),
     cpf: (v) => (cpfValido(v) ? "" : "Informe um CPF válido."),
     email: (v) => (emailValido(v) ? "" : "Informe um e-mail válido."),
-    cursos: (v) => (v.trim().length >= 3 ? "" : "Informe o(s) curso(s) que você fez na Lito."),
     vaga: (v) => (v.trim().length >= 2 ? "" : "Informe a vaga da Azul em que se inscreveu."),
   };
   const confirmacoes = [
@@ -287,6 +286,12 @@ document.addEventListener("DOMContentLoaded", () => {
         mostrarErro(name, msg);
         primeiroInvalido = primeiroInvalido || campo;
       }
+    }
+
+    // Cursos (caixas de seleção — pelo menos um)
+    if (!form.querySelector('input[name="cursos"]:checked')) {
+      mostrarErro("cursos", "Marque pelo menos um curso.");
+      primeiroInvalido = primeiroInvalido || form.querySelector('input[name="cursos"]');
     }
 
     // Currículo (arquivo)

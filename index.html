@@ -217,12 +217,24 @@
           <fieldset class="grp">
             <legend class="grp__legend"><span class="grp__num">02</span> Voo pretendido</legend>
 
-            <div class="field">
-              <label for="cursos">Qual(is) curso(s) você realizou/realiza na Lito Academy?</label>
-              <textarea id="cursos" name="cursos" rows="3" required
-                        placeholder="Ex.: Comissário de Voo, Agente de Aeroporto..."></textarea>
+            <fieldset class="field cursosgrp">
+              <legend class="cursosgrp__legend">Qual(is) curso(s) você realizou/realiza na Lito Academy?</legend>
+              <p class="cursosgrp__hint">Marque todos que se aplicam.</p>
+              <div class="cursosgrp__grid">
+                <label class="chk"><input type="checkbox" name="cursos" value="Comissário de Bordo Teórico" /><span>Comissário de Bordo Teórico</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Comissário de Bordo Teórico + Selva" /><span>Comissário de Bordo Teórico + Selva</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Sobrevivência na Selva" /><span>Sobrevivência na Selva</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Mecânico de Aeronaves Básico + Célula" /><span>Mecânico de Aeronaves Básico + Célula</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Mecânico de Aeronaves Básico + Aviônica" /><span>Mecânico de Aeronaves Básico + Aviônica</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Mecânico de Aeronaves Básico + GMP" /><span>Mecânico de Aeronaves Básico + GMP</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Combão Mecânico de Aeronaves (Básico + Célula + Aviônica + GMP)" /><span>Combão Mecânico de Aeronaves (Básico + Célula + Aviônica + GMP)</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Piloto Privado Teórico" /><span>Piloto Privado Teórico</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Piloto Privado + Comercial Teórico" /><span>Piloto Privado + Comercial Teórico</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Piloto Comercial Teórico + IFR Teórico" /><span>Piloto Comercial Teórico + IFR Teórico</span></label>
+                <label class="chk"><input type="checkbox" name="cursos" value="Pós-Graduação Engenheiro Aeronáutico" /><span>Pós-Graduação Engenheiro Aeronáutico</span></label>
+              </div>
               <p class="field__err" data-err-for="cursos"></p>
-            </div>
+            </fieldset>
 
             <div class="field">
               <label for="vaga">Para qual vaga da Azul Linhas Aéreas você se inscreveu?</label>

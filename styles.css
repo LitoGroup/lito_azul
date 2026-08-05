@@ -426,6 +426,43 @@ a.cobrand:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgb
 .fotoup__remove:hover { border-color: currentColor; }
 .fotoup .field__err { grid-column: 1 / -1; }
 
+/* Cursos — caixas de seleção múltipla */
+.cursosgrp { border: 0; padding: 0; margin: 0 0 1.1rem; }
+.cursosgrp__legend {
+  font-weight: 600; font-size: .95rem; color: var(--tinta);
+  padding: 0; margin-bottom: .15rem;
+}
+.cursosgrp__hint { color: var(--muted); font-size: .82rem; margin-bottom: .65rem; }
+.cursosgrp__grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .5rem;
+}
+.chk { position: relative; display: block; }
+.chk input {
+  position: absolute; opacity: 0; inset: 0; cursor: pointer;
+}
+.chk span {
+  display: flex; align-items: center; gap: .55rem;
+  padding: .6rem .75rem; min-height: 100%;
+  border: 1.5px solid var(--line-strong); border-radius: 10px;
+  background: #fbfdff; color: var(--tinta); font-size: .88rem; line-height: 1.3;
+  cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.chk span::before {
+  content: ""; flex: none; width: 1.05rem; height: 1.05rem;
+  border: 1.5px solid var(--line-strong); border-radius: 5px; background: #fff;
+  transition: background .15s, border-color .15s;
+}
+.chk:hover span { border-color: var(--azul); }
+.chk input:checked + span {
+  border-color: var(--azul); background: #eef6ff;
+  box-shadow: 0 0 0 1px var(--azul) inset;
+}
+.chk input:checked + span::before {
+  background: var(--azul) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center / 70% no-repeat;
+  border-color: var(--azul);
+}
+.chk input:focus-visible + span { outline: 2px solid var(--ceu); outline-offset: 2px; }
+
 /* Confirmações Sim/Não (segmented) */
 .confirm { margin-bottom: 1.4rem; }
 .confirm--consent {
@@ -517,6 +554,7 @@ a.cobrand:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -14px rgb
 @media (max-width: 760px) {
   .steps { grid-template-columns: 1fr; }
   .field-row { grid-template-columns: 1fr; }
+  .cursosgrp__grid { grid-template-columns: 1fr; }
   .site-nav > a:not(.btn) { display: none; }
   .depboard { grid-template-columns: auto 1fr auto; }
   .seg { display: grid; }
