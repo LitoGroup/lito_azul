@@ -11,8 +11,28 @@
    sem os scripts), cai em modo demo: valida e mostra a tela
    de sucesso sem enviar nada.
    --------------------------------------------------------- */
+/* Cliente próprio do formulário: SEMPRE anônimo.
+   Não reaproveita sessão salva no navegador (ex.: admin logado
+   no painel neste mesmo navegador) — o RLS só aceita INSERT de
+   anon, então uma sessão autenticada aqui faria o envio falhar. */
+let _sbForm = null;
+function sbFormulario() {
+  const cfg = window.LAZ_CONFIG || {};
+  if (!window.supabase || !cfg.url) return null;
+  if (!_sbForm) {
+    _sbForm = window.supabase.createClient(cfg.url, cfg.anonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        storageKey: "laz-form", // isolado da sessão do painel
+      },
+    });
+  }
+  return _sbForm;
+}
+
 async function enviarCandidatura(formData) {
-  const sb = window.sb;
+  const sb = sbFormulario();
   const cfg = window.LAZ_CONFIG || {};
 
   // Sem Supabase → modo demo.
