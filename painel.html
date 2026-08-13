@@ -194,6 +194,20 @@
     </div>
   </div>
 
+  <!-- Modal de confirmação (substitui o confirm() do navegador) -->
+  <div class="confirm" id="confirmModal" hidden>
+    <div class="confirm__card" role="alertdialog" aria-modal="true"
+         aria-labelledby="confirmTitle" aria-describedby="confirmMsg">
+      <div class="confirm__icon" aria-hidden="true">!</div>
+      <h2 class="confirm__title" id="confirmTitle"></h2>
+      <p class="confirm__msg" id="confirmMsg"></p>
+      <div class="confirm__actions">
+        <button class="confirm__cancel" id="confirmCancel" type="button">Cancelar</button>
+        <button class="btn btn--danger" id="confirmOk" type="button">Excluir</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal de foto ampliada -->
   <div class="fotomodal" id="fotoModal" hidden>
     <button class="fotomodal__close" id="fotoModalClose" type="button" aria-label="Fechar">×</button>

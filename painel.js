@@ -61,6 +61,11 @@
     fotoModalImg: document.getElementById("fotoModalImg"),
     fotoModalCap: document.getElementById("fotoModalCap"),
     fotoModalClose: document.getElementById("fotoModalClose"),
+    confirmModal: document.getElementById("confirmModal"),
+    confirmTitle: document.getElementById("confirmTitle"),
+    confirmMsg: document.getElementById("confirmMsg"),
+    confirmOk: document.getElementById("confirmOk"),
+    confirmCancel: document.getElementById("confirmCancel"),
   };
 
   const state = { items: [], filtro: "todas", busca: "" };
@@ -126,6 +131,44 @@
       });
     } catch (_) { return iso; }
   }
+
+  /* ---------------- confirmação (modal no lugar do confirm nativo) ----------------
+     Uso: const ok = await confirmar({ titulo, msg, okLabel });
+     Resolve true no botão de ação e false ao cancelar/Esc/clicar no fundo. */
+  let confirmResolver = null;
+  let confirmOrigem = null;
+
+  function confirmar(opts) {
+    opts = opts || {};
+    els.confirmTitle.textContent = opts.titulo || "Tem certeza?";
+    els.confirmMsg.textContent = opts.msg || "";
+    els.confirmOk.textContent = opts.okLabel || "Confirmar";
+    confirmOrigem = document.activeElement;
+    els.confirmModal.hidden = false;
+    document.body.style.overflow = "hidden";
+    els.confirmCancel.focus(); // foco no seguro por padrão (ação destrutiva)
+    return new Promise((resolve) => { confirmResolver = resolve; });
+  }
+
+  function fecharConfirm(valor) {
+    if (!confirmResolver) return;
+    const resolve = confirmResolver;
+    confirmResolver = null;
+    els.confirmModal.hidden = true;
+    document.body.style.overflow = "";
+    if (confirmOrigem && confirmOrigem.focus) confirmOrigem.focus();
+    confirmOrigem = null;
+    resolve(valor);
+  }
+
+  els.confirmOk.addEventListener("click", () => fecharConfirm(true));
+  els.confirmCancel.addEventListener("click", () => fecharConfirm(false));
+  els.confirmModal.addEventListener("click", (e) => {
+    if (e.target === els.confirmModal) fecharConfirm(false); // clique no fundo
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !els.confirmModal.hidden) fecharConfirm(false);
+  });
 
   /* ---------------- autenticação ---------------- */
   // Backoff de login: após erros seguidos, trava o botão por um
@@ -407,10 +450,11 @@
   }
 
   async function excluirCandidatura(i, btn) {
-    const ok = confirm(
-      "Excluir a candidatura de " + (i.nome || "candidato(a)") +
-      "?\nO currículo e a foto também serão apagados. Essa ação não tem volta."
-    );
+    const ok = await confirmar({
+      titulo: "Excluir candidatura",
+      msg: "Excluir a candidatura de " + (i.nome || "candidato(a)") +
+        "? O currículo e a foto também serão apagados. Essa ação não tem volta.",
+    });
     if (!ok) return;
     btn.disabled = true;
     // Apaga os arquivos primeiro (se falhar, seguimos: o registro é o principal).
@@ -691,7 +735,11 @@
   }
 
   async function excluirVaga(v, btn) {
-    if (!confirm('Excluir a vaga "' + (v.titulo || "") + '"? Essa ação não tem volta.')) return;
+    const ok = await confirmar({
+      titulo: "Excluir vaga",
+      msg: 'Excluir a vaga "' + (v.titulo || "") + '"? Essa ação não tem volta.',
+    });
+    if (!ok) return;
     btn.disabled = true;
     const { error } = await sb.from("vagasLAZ").delete().eq("id", v.id);
     btn.disabled = false;
@@ -898,9 +946,11 @@
   }
 
   async function removerMembro(m, btn) {
-    const ok = confirm(
-      "Remover " + m.email + " da equipe?\nA pessoa perde o acesso ao painel na hora."
-    );
+    const ok = await confirmar({
+      titulo: "Remover da equipe",
+      msg: "Remover " + m.email + " da equipe? A pessoa perde o acesso ao painel na hora.",
+      okLabel: "Remover",
+    });
     if (!ok) return;
     btn.disabled = true;
     const { error } = await sb.from("adminsLAZ").delete().eq("email", m.email);
@@ -977,7 +1027,12 @@
     const off = el("button", "card__del", "Desativar 2FA");
     off.type = "button";
     off.addEventListener("click", async () => {
-      if (!confirm("Desativar a verificação em 2 etapas? Sua conta fica menos protegida.")) return;
+      const ok = await confirmar({
+        titulo: "Desativar 2FA",
+        msg: "Desativar a verificação em 2 etapas? Sua conta fica menos protegida.",
+        okLabel: "Desativar",
+      });
+      if (!ok) return;
       off.disabled = true;
       const { error } = await sb.auth.mfa.unenroll({ factorId: fator.id });
       off.disabled = false;
