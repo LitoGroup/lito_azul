@@ -29,7 +29,8 @@
     viewVagas: document.getElementById("viewVagas"),
     novaVagaBtn: document.getElementById("novaVagaBtn"),
     vagaForm: document.getElementById("vagaForm"),
-    vagaLinks: document.getElementById("vagaLinks"),
+    vagaLinksList: document.getElementById("vagaLinksList"),
+    addLinkBtn: document.getElementById("addLinkBtn"),
     vagaErr: document.getElementById("vagaErr"),
     vagaSalvarBtn: document.getElementById("vagaSalvarBtn"),
     vagaCancelarBtn: document.getElementById("vagaCancelarBtn"),
@@ -709,19 +710,57 @@
     renderVagas();
   }
 
+  // Uma caixa de link por vaga; o botão "+" adiciona mais caixas.
+  function criarLinhaLink(valor) {
+    const row = el("div", "linkrow");
+    const input = el("input", "vagalink-input");
+    input.type = "url";
+    input.placeholder = "https://azul.gupy.io/...";
+    if (valor) input.value = valor;
+    const rm = el("button", "linkrow__del");
+    rm.type = "button";
+    rm.textContent = "×";
+    rm.setAttribute("aria-label", "Remover este link");
+    rm.addEventListener("click", () => {
+      // Mantém sempre ao menos uma caixa: a última só é limpa.
+      if (els.vagaLinksList.querySelectorAll(".linkrow").length > 1) row.remove();
+      else input.value = "";
+      const foco = els.vagaLinksList.querySelector(".vagalink-input");
+      if (foco) foco.focus();
+    });
+    row.append(input, rm);
+    return row;
+  }
+
+  function resetLinksVaga() {
+    els.vagaLinksList.innerHTML = "";
+    els.vagaLinksList.appendChild(criarLinhaLink());
+  }
+
+  function adicionarLinhaLink() {
+    const row = criarLinhaLink();
+    els.vagaLinksList.appendChild(row);
+    row.querySelector(".vagalink-input").focus();
+  }
+
   function alternarFormVaga(abrir) {
     els.vagaForm.hidden = !abrir;
     els.novaVagaBtn.hidden = abrir;
     els.vagaErr.hidden = true;
-    if (abrir) els.vagaLinks.focus();
+    if (abrir) {
+      resetLinksVaga();
+      els.vagaLinksList.querySelector(".vagalink-input").focus();
+    }
   }
 
   async function publicarVaga(e) {
     e.preventDefault();
 
-    // Vários links de uma vez: um por linha (ou separados por espaço).
+    // Uma caixa por vaga: coleta o valor de cada campo preenchido.
     // Cada link válido vira uma vaga; o próprio link é o título do card.
-    const brutos = els.vagaLinks.value.split(/\s+/).map((s) => s.trim()).filter(Boolean);
+    const brutos = Array.from(els.vagaLinksList.querySelectorAll(".vagalink-input"))
+      .map((i) => i.value.trim())
+      .filter(Boolean);
     const vistos = new Set();
     const links = [];
     let invalidos = 0;
@@ -740,7 +779,8 @@
         ? "Nenhum link válido encontrado. Confira e cole novamente."
         : "Cole ao menos um link de vaga.";
       els.vagaErr.hidden = false;
-      els.vagaLinks.focus();
+      const foco = els.vagaLinksList.querySelector(".vagalink-input");
+      if (foco) foco.focus();
       return;
     }
 
@@ -1053,6 +1093,7 @@
   els.viewTabs.forEach((t) =>
     t.addEventListener("click", () => abrirView(t.dataset.view)));
   els.novaVagaBtn.addEventListener("click", () => alternarFormVaga(true));
+  els.addLinkBtn.addEventListener("click", adicionarLinhaLink);
   els.vagaCancelarBtn.addEventListener("click", () => alternarFormVaga(false));
   els.vagaForm.addEventListener("submit", publicarVaga);
   els.loginForm.addEventListener("submit", entrar);

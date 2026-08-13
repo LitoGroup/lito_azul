@@ -127,9 +127,10 @@
 
       <form class="vagaform" id="vagaForm" hidden>
         <div class="field">
-          <label for="vagaLinks">Links das vagas na Gupy</label>
-          <textarea id="vagaLinks" rows="5" placeholder="Cole um link por linha:&#10;https://azul.gupy.io/...&#10;https://azul.gupy.io/..."></textarea>
-          <p class="equipeform__hint">Cole quantos links quiser — um por linha. Cada link vira uma vaga publicada.</p>
+          <label>Links das vagas na Gupy</label>
+          <div id="vagaLinksList"></div>
+          <button class="linkrow__add" id="addLinkBtn" type="button">+ Adicionar link</button>
+          <p class="equipeform__hint">Uma caixa por vaga. Cada link vira uma vaga publicada.</p>
         </div>
         <p class="login__err" id="vagaErr" role="alert" hidden></p>
         <div class="vagaform__actions">

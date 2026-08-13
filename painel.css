@@ -96,6 +96,23 @@
 .vagaform textarea { resize: vertical; min-height: 84px; }
 .vagaform__actions { display: flex; gap: .7rem; margin-top: .2rem; }
 
+/* Caixas de link (uma por vaga) + botão de adicionar */
+.linkrow { display: flex; gap: .5rem; align-items: center; margin-bottom: .5rem; }
+.linkrow .vagalink-input { flex: 1; min-width: 0; }
+.linkrow__del {
+  flex: none; width: 38px; height: 38px; border-radius: 10px;
+  border: 1.5px solid var(--line-strong); background: #fff; color: var(--muted);
+  font-size: 1.3rem; line-height: 1; cursor: pointer; transition: color .15s, border-color .15s;
+}
+.linkrow__del:hover { color: #c0392b; border-color: #c0392b; }
+.linkrow__add {
+  display: inline-block; margin-top: .1rem;
+  background: none; border: 1.5px dashed var(--line-strong); color: var(--azul);
+  font-family: var(--f-body); font-weight: 600; font-size: .9rem;
+  padding: .5rem .85rem; border-radius: 10px; cursor: pointer; transition: border-color .15s;
+}
+.linkrow__add:hover { border-style: solid; border-color: var(--azul); }
+
 .vagas {
   max-width: 1200px; margin: 0 auto;
   padding: 1rem clamp(1rem, 4vw, 2rem) 3.5rem;
