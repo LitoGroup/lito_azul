@@ -29,10 +29,7 @@
     viewVagas: document.getElementById("viewVagas"),
     novaVagaBtn: document.getElementById("novaVagaBtn"),
     vagaForm: document.getElementById("vagaForm"),
-    vagaTitulo: document.getElementById("vagaTitulo"),
-    vagaLocal: document.getElementById("vagaLocal"),
-    vagaLink: document.getElementById("vagaLink"),
-    vagaDesc: document.getElementById("vagaDesc"),
+    vagaLinks: document.getElementById("vagaLinks"),
     vagaErr: document.getElementById("vagaErr"),
     vagaSalvarBtn: document.getElementById("vagaSalvarBtn"),
     vagaCancelarBtn: document.getElementById("vagaCancelarBtn"),
@@ -716,28 +713,47 @@
     els.vagaForm.hidden = !abrir;
     els.novaVagaBtn.hidden = abrir;
     els.vagaErr.hidden = true;
-    if (abrir) els.vagaTitulo.focus();
+    if (abrir) els.vagaLinks.focus();
   }
 
   async function publicarVaga(e) {
     e.preventDefault();
-    const titulo = els.vagaTitulo.value.trim();
-    if (!titulo) {
-      els.vagaErr.textContent = "Informe o título da vaga.";
+
+    // Vários links de uma vez: um por linha (ou separados por espaço).
+    // Cada link válido vira uma vaga; o próprio link é o título do card.
+    const brutos = els.vagaLinks.value.split(/\s+/).map((s) => s.trim()).filter(Boolean);
+    const vistos = new Set();
+    const links = [];
+    let invalidos = 0;
+    for (const item of brutos) {
+      const comProto = /^https?:\/\//i.test(item) ? item : "https://" + item;
+      let url;
+      try { url = new URL(comProto); } catch (_) { invalidos++; continue; }
+      if (!url.hostname.includes(".")) { invalidos++; continue; }
+      if (vistos.has(url.href)) continue; // ignora repetidos
+      vistos.add(url.href);
+      links.push(url.href);
+    }
+
+    if (!links.length) {
+      els.vagaErr.textContent = invalidos
+        ? "Nenhum link válido encontrado. Confira e cole novamente."
+        : "Cole ao menos um link de vaga.";
       els.vagaErr.hidden = false;
-      els.vagaTitulo.focus();
+      els.vagaLinks.focus();
       return;
     }
+
     els.vagaSalvarBtn.disabled = true;
     const txt = els.vagaSalvarBtn.textContent;
     els.vagaSalvarBtn.textContent = "Publicando...";
-    const { error } = await sb.from("vagasLAZ").insert({
-      titulo,
-      local: els.vagaLocal.value.trim() || null,
-      link: els.vagaLink.value.trim() || null,
-      descricao: els.vagaDesc.value.trim() || null,
-      publicado_por: usuarioEmail || null,
-    });
+    const { error } = await sb.from("vagasLAZ").insert(
+      links.map((link) => ({
+        titulo: link,
+        link,
+        publicado_por: usuarioEmail || null,
+      }))
+    );
     els.vagaSalvarBtn.disabled = false;
     els.vagaSalvarBtn.textContent = txt;
     if (error) {

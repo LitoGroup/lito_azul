@@ -110,7 +110,7 @@
 }
 .vaga--encerrada { border-left-color: #9aa8bd; opacity: .75; }
 .vaga__head { display: flex; align-items: flex-start; justify-content: space-between; gap: .6rem; }
-.vaga__titulo { font-family: var(--f-display); font-size: 1.12rem; font-weight: 600; }
+.vaga__titulo { font-family: var(--f-display); font-size: 1.12rem; font-weight: 600; overflow-wrap: anywhere; min-width: 0; }
 .vaga__badge {
   flex: none; font-family: var(--f-mono); font-size: .6rem; font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase;

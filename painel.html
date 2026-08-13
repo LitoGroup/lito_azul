@@ -126,23 +126,10 @@
       </div>
 
       <form class="vagaform" id="vagaForm" hidden>
-        <div class="vagaform__row">
-          <div class="field">
-            <label for="vagaTitulo">Título da vaga</label>
-            <input id="vagaTitulo" type="text" required placeholder="Ex.: Comissário de Voo" />
-          </div>
-          <div class="field">
-            <label for="vagaLocal">Base / cidade</label>
-            <input id="vagaLocal" type="text" placeholder="Ex.: VCP — Campinas" />
-          </div>
-        </div>
         <div class="field">
-          <label for="vagaLink">Link da vaga na Gupy</label>
-          <input id="vagaLink" type="url" placeholder="https://azul.gupy.io/..." />
-        </div>
-        <div class="field">
-          <label for="vagaDesc">Requisitos / observações</label>
-          <textarea id="vagaDesc" rows="3" placeholder="Requisitos mínimos, turno, prazo..."></textarea>
+          <label for="vagaLinks">Links das vagas na Gupy</label>
+          <textarea id="vagaLinks" rows="5" placeholder="Cole um link por linha:&#10;https://azul.gupy.io/...&#10;https://azul.gupy.io/..."></textarea>
+          <p class="equipeform__hint">Cole quantos links quiser — um por linha. Cada link vira uma vaga publicada.</p>
         </div>
         <p class="login__err" id="vagaErr" role="alert" hidden></p>
         <div class="vagaform__actions">
