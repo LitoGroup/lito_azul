@@ -96,7 +96,7 @@
   const STATUS = {
     nova:       { label: "Nova",       cls: "st-nova" },
     em_analise: { label: "Em análise", cls: "st-analise" },
-    indicada:   { label: "Indicada",   cls: "st-indicada" },
+    indicada:   { label: "Contratado", cls: "st-indicada" },
     arquivada:  { label: "Arquivada",  cls: "st-arquivada" },
   };
 
